@@ -3,7 +3,7 @@
 
 
 
-// Item Controller IIFE  *****************************
+// Item Controller IIFE  *****************************************************
 const ItemCtrl = (function() {
   // Item Constructor
   const Item = function(id, name, calories) {
@@ -45,6 +45,20 @@ const ItemCtrl = (function() {
       
       return newItem;
     },
+
+    // Get total calories
+    getTotalCalories: function() {
+      let total = 0;
+      //loop through items and add calories
+      data.items.forEach(function(item){
+        total += item.calories;
+      });
+      // set total calories in data structure
+      data.totalCalories = total;
+      // return total
+      return data.totalCalories;
+    },
+
     logData: function() {
       return data;
     }
@@ -54,14 +68,15 @@ const ItemCtrl = (function() {
 
 
 
-// UI Controller  ******************************
+// UI Controller  ****************************************************************
 const UICtrl = (function() {
   // DOM selectors here for ease of maintenance
   const UISelectors = {
     itemList: '#item-list',
     addBtn: '.add-btn',
     itemNameInput: '#item-name',
-    itemCaloriesInput: '#item-calories'
+    itemCaloriesInput: '#item-calories',
+    totalCalories: '.total-calories'
   }
 
   // Public methods
@@ -108,6 +123,9 @@ const UICtrl = (function() {
       document.querySelector(UISelectors.itemNameInput).value = '';
       document.querySelector(UISelectors.itemCaloriesInput).value = '';
     },
+    showTotalCalories: function(totalCalories) {
+      document.querySelector(UISelectors.totalCalories).textContent = totalCalories;
+    },
     // hide empty list
     hideList: function() {
       document.querySelector(UISelectors.itemList).style.display = 'none';
@@ -121,7 +139,7 @@ const UICtrl = (function() {
 
 
 
-// App Controller *******************************
+// App Controller ******************************************************************
 const App = (function(ItemCtrl, UICtrl) {
 
   //  Load event listeners
@@ -147,6 +165,11 @@ const App = (function(ItemCtrl, UICtrl) {
       // add item to UI list
       UICtrl.addListItem(newItem);
 
+      // get total calories
+      const totalCalories = ItemCtrl.getTotalCalories();
+      // add total calories to UI
+      UICtrl.showTotalCalories(totalCalories);
+
       // clear input fields
       UICtrl.clearInput();
     }
@@ -168,6 +191,11 @@ const App = (function(ItemCtrl, UICtrl) {
         // Populate list with items
         UICtrl.populateItemList(items);
       }
+
+      // get total calories from local storage
+      const totalCalories = ItemCtrl.getTotalCalories();
+      // add total calories from local storage to UI
+      UICtrl.showTotalCalories(totalCalories);
 
       // Load event listeners
       loadEventListeners();
