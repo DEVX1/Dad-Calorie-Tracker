@@ -3,6 +3,6 @@ An app that tracks meal and calorie content, written in pure Javascript, using t
 
 The controller schema for the app:
 * Storage Controller
-* Item Controller
-* UI Controller
-* Main App Controller
+* Item Controller - ItemCtrl() IIFE
+* UI Controller - UICtrl() IIFE
+* Main App Controller - App(ItemCtrl, UICtrl) IIFE
