@@ -88,6 +88,11 @@ const ItemCtrl = (function() {
       data.items.splice(index, 1);
     },
 
+    // clear all items from data structure method
+    clearAllItems: function() {
+      data.items = [];
+    },
+
     // set the current item
     setCurrentItem: function(item) {
       data.currentItem = item;
@@ -126,6 +131,7 @@ const UICtrl = (function() {
   const UISelectors = {
     itemList: '#item-list',
     listItems: '#item-list li',
+    clearBtn: '.clear-btn',
     addBtn: '.add-btn',
     updateBtn: '.update-btn',
     deleteBtn: '.delete-btn',
@@ -195,6 +201,15 @@ const UICtrl = (function() {
       const item = document.querySelector(itemID);
       item.remove();
     },
+    // remove all items from UI
+    removeItems: function() {
+      let listItems = document.querySelectorAll(UISelectors.listItems); // returns node list
+      // create array from node list
+      listItems = Array.from(listItems);
+      listItems.forEach(function(item) {
+        item.remove();
+      });
+    },
     // clear input field method
     clearInput: function() {
       document.querySelector(UISelectors.itemNameInput).value = '';
@@ -262,6 +277,9 @@ const App = (function(ItemCtrl, UICtrl) {
 
      // Delete item event
      document.querySelector(UISelectors.deleteBtn).addEventListener('click', itemDeleteSubmit);
+
+     // Clear all event listener
+     document.querySelector(UISelectors.clearBtn).addEventListener('click', clearAllItemsClick);
 
     // back button clears entry field event
     // preventDefault here prevents page reload and clearing entries
@@ -352,6 +370,25 @@ const App = (function(ItemCtrl, UICtrl) {
     UICtrl.showTotalCalories(totalCalories);
 
     UICtrl.clearEditState();
+
+    e.preventDefault();  // prevent the default behavior
+  }
+
+  // clear all items event
+  const clearAllItemsClick = function(e) {
+    // delete all items from data structure
+    ItemCtrl.clearAllItems();
+
+    // get total calories from local storage
+    const totalCalories = ItemCtrl.getTotalCalories();
+    // add total calories from local storage to UI
+    UICtrl.showTotalCalories(totalCalories);
+
+    // remove all items from the UI
+    UICtrl.removeItems();
+
+    // Hide ul
+    UICtrl.hideList();
 
     e.preventDefault();  // prevent the default behavior
   }
