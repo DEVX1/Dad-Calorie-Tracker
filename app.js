@@ -1,3 +1,4 @@
+// TRACALORIE APP
 // Storage Controller here
 const StorageCtrl = (function() {
   // Public methods
@@ -32,6 +33,35 @@ const StorageCtrl = (function() {
         items = JSON.parse(localStorage.getItem('items'));
       }
       return items;
+    },
+
+    // update item in local storage
+    updateItemStorage: function(updatedItem) {
+      let items = JSON.parse(localStorage.getItem('items'));
+
+      items.forEach(function(item, index) {
+        if(updatedItem.id === item.id) {
+          items.splice(index, 1, updatedItem);
+        }
+      });
+      localStorage.setItem('items', JSON.stringify(items));
+    },
+
+    // delete item from local storage
+    deleteItemFromStorage: function(id) {
+      let items = JSON.parse(localStorage.getItem('items'));
+
+      items.forEach(function(item, index) {
+        if(id === item.id) {
+          items.splice(index, 1);
+        }
+      });
+      localStorage.setItem('items', JSON.stringify(items));
+    },
+
+    // clear all items from local storage
+    clearItemsFromStorage: function() {
+      localStorage.removeItem('items');
     }
   }
 })();
@@ -159,8 +189,6 @@ const ItemCtrl = (function() {
 })();
 
 
-
-
 // UI Controller  ****************************************************************
 const UICtrl = (function() {
   // DOM selectors here for ease of maintenance
@@ -286,7 +314,6 @@ const UICtrl = (function() {
  })();
 
 
-
 // App Controller ******************************************************************
 const App = (function(ItemCtrl, StorageCtrl, UICtrl) {
 
@@ -323,7 +350,6 @@ const App = (function(ItemCtrl, StorageCtrl, UICtrl) {
       UICtrl.clearEditState();
       e.preventDefault();
     });
-
   }
 
   // add item submit
@@ -388,6 +414,9 @@ const App = (function(ItemCtrl, StorageCtrl, UICtrl) {
     // add total calories to UI
     UICtrl.showTotalCalories(totalCalories);
 
+    // Update local storage
+    StorageCtrl.updateItemStorage(updatedItem);
+
     UICtrl.clearEditState();
 
     e.preventDefault();  // prevent the default behavior
@@ -408,6 +437,9 @@ const App = (function(ItemCtrl, StorageCtrl, UICtrl) {
     // add total calories to UI
     UICtrl.showTotalCalories(totalCalories);
 
+    // Delete from local storage
+    StorageCtrl.deleteItemFromStorage(currentItem.id);
+
     UICtrl.clearEditState();
 
     e.preventDefault();  // prevent the default behavior
@@ -425,6 +457,9 @@ const App = (function(ItemCtrl, StorageCtrl, UICtrl) {
 
     // remove all items from the UI
     UICtrl.removeItems();
+
+    // remove all items from local storage
+    StorageCtrl.clearItemsFromStorage();
 
     // Hide ul
     UICtrl.hideList();
@@ -460,7 +495,6 @@ const App = (function(ItemCtrl, StorageCtrl, UICtrl) {
   }
 
  })(ItemCtrl, StorageCtrl, UICtrl);
-
 
  // Initialize app
  App.init();
