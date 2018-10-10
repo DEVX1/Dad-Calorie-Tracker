@@ -174,7 +174,7 @@ const ItemCtrl = (function() {
       let total = 0;
       //loop through items and add calories
       data.items.forEach(function(item){
-        total =+ item.id;
+        total += item.id;
       });
       // set total calories in data structure
       data.totalCalories = total;
