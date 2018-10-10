@@ -213,7 +213,7 @@ const UICtrl = (function() {
       // loop through the list of items
       items.forEach(function(item) {
         html += `<li class="collection-item" id="item-${item.id}">
-        <strong>${item.name}:</strong> <em>${item.calories} Calories</em>
+        <strong>${item.name}:</strong> <em>${item.calories} ISBN Number</em>
         <a href="#" class="secondary-content"><i class="fa fa-pencil edit-item"></i></a>
       </li>`;
       });
@@ -239,7 +239,7 @@ const UICtrl = (function() {
       // add ID
       li.id = `item-${item.id}`;
       // add HTML
-      li.innerHTML = `<strong>${item.name}:</strong> <em>${item.calories} Calories</em>
+      li.innerHTML = `<strong>${item.name}:</strong> <em>${item.calories} ISBN Number</em>
       <a href="#" class="secondary-content"><i class="fa fa-pencil edit-item"></i></a>`;
       // insert item
       document.querySelector(UISelectors.itemList).insertAdjacentElement('beforeend',li);
@@ -254,7 +254,7 @@ const UICtrl = (function() {
         const itemID = listItem.getAttribute('id');
 
         if(itemID === `item-${item.id}`) {
-          document.querySelector(`#${itemID}`).innerHTML = `<strong>${item.name}:</strong> <em>${item.calories} Calories</em>
+          document.querySelector(`#${itemID}`).innerHTML = `<strong>${item.name}:</strong> <em>${item.calories} ISBN Number</em>
           <a href="#" class="secondary-content"><i class="fa fa-pencil edit-item"></i></a>`;
         }
       });
